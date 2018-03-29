@@ -1,0 +1,99 @@
+#!/usr/bin/env zsh
+
+set -o errexit                                                          # Detiene el script cuando ocurre un error
+set -o pipefail                                                         # Ocurre cuando hay un error cuando se envía un resultado usando una tubería
+set -o nounset                                                          # Detecta variables NO inicializadas y sale con un error
+#set -o xtrace                                                          # Imprime/muestra cada expresión antes de ejecutarla, ideal para debugging
+
+PATHSCRIPT=$0                                                           # Capturo la ruta y nombre del script
+SCRIPTNAME=${PATHSCRIPT: -9}                                            # Extraigo el nombre del script de $PATHSCRIPT
+PARAMETERS=${@}															# Parámetros que recibe la aplicación
+
+readonly VERSION="3.4.2"
+readonly AUTHOR="3rn3st0"
+
+trap ctrlC INT                                                          # Capturo si se presionó Ctrl-C
+
+#--
+# startApache  Inicializa el servicio de Apache/PHP
+#
+startApache() {
+    sudo systemctl start httpd
+    if [[ "$?" -eq 0 ]]; then
+        showMsg "Servidor Apache y PHP en línea ${FVRDE}[OK]${SCLR}\n"
+    else
+        showMsg "Ocurrió un error al intentar cargar Apache/PHP ${FROJO}[ERROR]${SCLR}\n"
+        exit 1
+    fi
+}
+
+#--
+# startMySQL   Inicializa el servicio de MySQL
+#
+startMySQL() {
+    sudo systemctl start mysqld
+    if [[ "$?" -eq 0 ]]; then
+        showMsg "Servidor MySQL en línea ${FVRDE}[OK]${SCLR}\n"
+    else
+        showMsg "Ocurrió un error al intentar cargar MySQL ${FROJO}[ERROR]${SCLR}\n"
+        exit 1
+    fi
+}
+
+#--
+# showMsg      Muestra un mensaje en la salida estándar
+#
+showMsg() {
+    printf "\n$1"
+}
+
+#--
+# showHelp     Muestra la ayuda del lampstart
+#
+showHelp() {
+    printf "\n   ${FVRDE}$SCRIPTNAME ${VERSION}${SCLR} by ${FVRDE}${AUTHOR}${SCLR}\n"
+    printf "   Ejecuta y carga en memoria los servicios de Apache, PHP y/o MySQL\n"
+    printf "\n"
+    printf "   Uso: $SCRIPTNAME [--php | -p | --mysql | -m]\n"
+    printf "\n"
+    printf "   --php   | -p       Inicializa el servidor Apache y el Servidor PHP\n"
+    printf "   --mysql | -s       Inicializa el servidor MySQL\n"
+    printf "   --ayuda | -a       Muestra esta ayuda\n"
+}
+
+#--
+# ctrlC        Muestra un mensaje si el usuario canceló el script
+#
+ctrlC() {
+  printf "\n${FBLCO}${BROJO}¡¡¡Se detuvo la ejecución de ${SCRIPTNAME} luego de haber presionado Ctrl-C!!!${SCLR}\n"
+}
+
+#---------------------------------------------------------------------------------------------------
+# Ejecuto la función setColors al inicio para que las variables globales
+# de colores y atributos de texto estén disponibles en todo el script.
+source /home/tureco/Scripts/setcolors.sh
+setColors
+
+if [[ "$#" -lt 1 ]]; then
+    showHelp
+else
+	if [[ -z ${PARAMETERS} ]]; then
+		showHelp
+	else
+		for PARAM in ${PARAMETERS}; do
+			case ${PARAM} in
+	            -a | --ayuda)
+    	            showHelp;;
+        	    -p | --php)
+            	    startApache;;
+	            -m | --mysql)
+    	            startMySQL;;
+        	    *)
+            	    printf "\n   ${BROJO}${FBLCO}ERROR: parámetro desconocido \"$PARAM\"${SCLR}\n"
+                	showHelp;;
+	        esac
+       		# Salta al siguiente parámetro
+    	    #shift
+	    done
+	fi
+fi
