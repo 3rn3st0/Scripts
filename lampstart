@@ -71,7 +71,7 @@ ctrlC() {
 #---------------------------------------------------------------------------------------------------
 # Ejecuto la función setColors al inicio para que las variables globales
 # de colores y atributos de texto estén disponibles en todo el script.
-source /home/tureco/Scripts/setcolors.sh
+source /home/tureco/Scripts/include/setcolors.sh
 setColors
 
 if [[ "$#" -lt 1 ]]; then
