@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 sudo chgrp -R http storage bootstrap/cache
 sudo chmod -R ug+rwx storage bootstrap/cache
-echo "Se cambiaron los permisos a los directorios storage y bootstrap/cache..."
+printf "\nSe cambiaron los permisos a los directorios storage y bootstrap/cache...\n"
