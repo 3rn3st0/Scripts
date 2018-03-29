@@ -1,16 +1,17 @@
-#!/bin/zsh
-echo "Limpiando entorno de Laravel..."
-echo
-echo "Caché de configuración..:"
+#!/usr/bin/env zsh
+
+printf "Limpiando entorno de Laravel...\n"
+printf
+printf "Caché de configuración..:\n"
 php artisan config:clear
-echo "Caché de enrutamiento..:"
+printf "Caché de enrutamiento..:\n"
 php artisan route:cache
-echo "Vistas compiladas..:"
+printf "Vistas compiladas..:\n"
 php artisan view:clear
 if [ "$?" -eq "0" ]; then
 	read -rst 2; timeout=$?
 	clear
-	echo "Entorno de Laravel limpio"
+	printf "Entorno de Laravel limpio\n"
 else
-	echo "Ocurrió un error durante el proceso, por favor, verifique"
+	printf "Ocurrió un error durante el proceso, por favor, verifique\n"
 fi
