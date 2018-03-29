@@ -2,4 +2,4 @@
 
 sudo chgrp -R http storage bootstrap/cache
 sudo chmod -R ug+rwx storage bootstrap/cache
-printf "\nSe cambiaron los permisos a los directorios storage y bootstrap/cache...\n"
+printf "\nSe cambiaron los permisos a los directorios \e[1mstorage y bootstrap/cache\e[0m...\n"
