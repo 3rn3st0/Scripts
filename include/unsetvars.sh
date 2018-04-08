@@ -10,4 +10,6 @@ unsetVars() {
     unset UPDATED
     unset AUTHOR
     unset HEADER
+    unset COPYRIGHT
+    unset LICENCE
 }
