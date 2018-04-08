@@ -3,7 +3,7 @@
 source /home/tureco/Scripts/include/env.sh
 
 declare -g PATHSCRIPT=$0                                                # Capturo la ruta y nombre del script
-declare -g SCRIPTNAME=${PATHSCRIPT: -9}                                 # Extraigo el nombre del script de $PATHSCRIPT
+declare -g SCRIPTNAME=${PATHSCRIPT: -8}                                 # Extraigo el nombre del script de $PATHSCRIPT
 declare -g PARAMETERS=${@}                                              # Parámetros que recibe la aplicación
 
 declare -g VERSION="1.0.1"
@@ -13,14 +13,6 @@ declare -g STORAGE="storage"
 declare -g BTCACHE="bootstrap/cache"
 
 trap ctrlC INT                                                          # Capturo si se presionó Ctrl-C
-
-checkDirectories() {
-    if [[ ! -d "$STORAGE" || ! -d "$BTCACHE" ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
 
 unsetVariables() {
     source /home/tureco/Scripts/include/unsetvars.sh
@@ -40,19 +32,15 @@ Main() {
     trap ctrlC INT                                                          # Capturo si se presionó Ctrl-C
 
     setColors
-    checkDirectories
-
     declare -g HEADER="\n   ${FVRDE}$SCRIPTNAME${SCLR} versión ${FAMAR}${VERSION}${SCLR} by ${FVRDE}${AUTHORNAME}${SCLR}"
 
-    local EXISTEN=$?                                                    # Capturo el valor retornado por checkDirectories
-
-    if [[ "$EXISTEN" -eq "$CERO" ]]; then
+    if [[ ! -d "$STORAGE" || ! -d "$BTCACHE" ]]; then
         showMsg "\n   Los directorios ${FROJO}storage${SCLR} y ${FROJO}bootstrap/cache${SCLR} NO existen!"
         showMsg "\n   Debe usted ubicarse en una ruta real de un proyecto Laravel."
     else
         sudo chgrp -R http storage bootstrap/cache
         sudo chmod -R ug+rwx storage bootstrap/cache
-        showMsg "\nSe cambiaron los permisos a los directorios ${FVRDE}storage${SCLR} y ${FVRDE}bootstrap/cache${SCLR}...\n"
+        showMsg "\n   Se cambiaron los permisos a los directorios ${FVRDE}storage${SCLR} y ${FVRDE}bootstrap/cache${SCLR}..."
     fi
     showMsg "\n${HEADER}\n"
 }
