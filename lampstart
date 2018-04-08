@@ -6,8 +6,8 @@ declare -g PATHSCRIPT=$0                                                # Captur
 declare -g SCRIPTNAME=${PATHSCRIPT: -9}                                 # Extraigo el nombre del script de $PATHSCRIPT
 declare -g PARAMETERS=${@}                                              # Parámetros que recibe la aplicación
 
-declare -g VERSION="3.6.3"
-declare -g UPDATED="2018-04-08 14:29"
+declare -g VERSION="3.6.5"
+declare -g UPDATED="2018-04-08 15:16"
 declare -g AUTHORNAME="Ernesto L. Chapon R."
 declare -g AUTHORNICK="3rn3st0"
 
@@ -15,7 +15,7 @@ declare -g AUTHORNICK="3rn3st0"
 # showHelp     Muestra la ayuda del lampstart
 #
 showHelp() {
-    printf ${HEADER}
+    showHeader
     printf "\n   Ejecuta y carga en memoria los servicios de Apache, PHP y/o MySQL\n"
     printf "\n"
     printf "   ${FAMAR}Uso:${SCLR}\n"
@@ -73,7 +73,7 @@ startMySQL() {
 startLAMP() {
     startApache
     startMySQL
-    showMsg "${HEADER}"
+    showFooter
 }
 
 #--
@@ -111,13 +111,12 @@ unsetVariables() {
 # Ejecuto la función setColors al inicio para que las variables globales de
 # colores y atributos de texto estén disponibles en todo el script.
 source /home/tureco/Scripts/include/setcolors.sh
+setColors
 source /home/tureco/Scripts/include/showmsg.sh
 source /home/tureco/Scripts/include/ctrlc.sh
+source /home/tureco/Scripts/include/headerfooter.sh
+
 trap ctrlC INT                                                          # Capturo si se presionó Ctrl-C
-
-setColors
-
-declare -g HEADER="\n\n   ${FVRDE}$SCRIPTNAME${SCLR} versión ${FAMAR}${VERSION}${SCLR} by ${FVRDE}${AUTHORNAME}${SCLR}\n"
 
 if [[ "$#" -lt 1 ]]; then
     showHelp
@@ -130,9 +129,9 @@ else
                 -a | --ayuda)
                     showHelp;;
                 -p | --php)
-                    startApache;showMsg "${HEADER}\n";;
+                    startApache;showFooter;;
                 -m | --mysql)
-                    startMySQL;showMsg "${HEADER}\n";;
+                    startMySQL;showFooter;;
                 -l | --lamp)
                     startLAMP;;
                 -e | --estado)
