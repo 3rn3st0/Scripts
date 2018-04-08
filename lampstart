@@ -5,70 +5,41 @@ set -o pipefail                                                         # Ocurre
 set -o nounset                                                          # Detecta variables NO inicializadas y sale con un error
 #set -o xtrace                                                          # Imprime/muestra cada expresión antes de ejecutarla, ideal para debugging
 
-PATHSCRIPT=$0                                                           # Capturo la ruta y nombre del script
-SCRIPTNAME=${PATHSCRIPT: -9}                                            # Extraigo el nombre del script de $PATHSCRIPT
-PARAMETERS=${@}                                                         # Parámetros que recibe la aplicación
+declare -g PATHSCRIPT=$0                                                # Capturo la ruta y nombre del script
+declare -g SCRIPTNAME=${PATHSCRIPT: -9}                                 # Extraigo el nombre del script de $PATHSCRIPT
+declare -g PARAMETERS=${@}                                              # Parámetros que recibe la aplicación
+declare -g CERO=0
 
-readonly VERSION="3.4.4"
-readonly AUTHOR="3rn3st0"
+declare -g VERSION="3.6"
+declare -g UPDATED="2018-04-08 12:45"
+declare -g AUTHORNAME="Ernesto L. Chapon R."
+declare -g AUTHORNICK="3rn3st0"
 
 trap ctrlC INT                                                          # Capturo si se presionó Ctrl-C
 
 #--
-# startApache  Inicializa el servicio de Apache/PHP
+# showHelp     Muestra la ayuda del lampstart
 #
-startApache() {
-    APACHEUP=$(pgrep http | wc -l);
-    if [[ "$APACHEUP" -eq 0 ]]; then
-        sudo systemctl start httpd
-        if [[ "$?" -eq 0 ]]; then
-            showMsg "Servidor Apache y PHP en línea ${FVRDE}[OK]${SCLR}\n"
-        else
-            showMsg "Ocurrió un error al intentar cargar Apache/PHP ${FROJO}[ERROR]${SCLR}\n"
-            exit 1
-        fi
-    else
-        showMsg "El servidor Apache y PHP ya están en línea\n"
-    fi
-}
-
-#--
-# startMySQL   Inicializa el servicio de MySQL
-#
-startMySQL() {
-    MYSQLUP=$(pgrep http | wc -l);
-    if [[ "$MYSQLUP" -eq 0 ]]; then
-        sudo systemctl start mysqld
-        if [[ "$?" -eq 0 ]]; then
-            showMsg "Servidor MySQL en línea ${FVRDE}[OK]${SCLR}\n"
-        else
-            showMsg "Ocurrió un error al intentar cargar MySQL ${FROJO}[ERROR]${SCLR}\n"
-            exit 1
-        fi
-    else
-        showMsg "El servidor MySQL ya están en línea\n"
-    fi
+showHelp() {
+    printf ${HEADER}
+    printf "\n   Ejecuta y carga en memoria los servicios de Apache, PHP y/o MySQL\n"
+    printf "\n"
+    printf "   ${FAMAR}Uso:${SCLR}\n"
+    printf "   $SCRIPTNAME [opciones]\n"
+    printf "\n"
+    printf "   ${FAMAR}Opciones:${SCLR}\n"
+    printf "   ${FVRDE}--php    | -p${SCLR}       Inicializa el servidor Apache y el Servidor PHP\n"
+    printf "   ${FVRDE}--mysql  | -s${SCLR}       Inicializa el servidor MySQL\n"
+    printf "   ${FVRDE}--lamp   | -l${SCLR}       Inicializa todos los servicios\n"
+    printf "   ${FVRDE}--estado | -e${SCLR}       Muestra el estado de los servicios\n"
+    printf "   ${FVRDE}--ayuda  | -a${SCLR}       Muestra esta ayuda\n"
 }
 
 #--
 # showMsg      Muestra un mensaje en la salida estándar
 #
 showMsg() {
-    printf "\n$1"
-}
-
-#--
-# showHelp     Muestra la ayuda del lampstart
-#
-showHelp() {
-    printf "\n   ${FVRDE}$SCRIPTNAME ${VERSION}${SCLR} by ${FVRDE}${AUTHOR}${SCLR}\n"
-    printf "   Ejecuta y carga en memoria los servicios de Apache, PHP y/o MySQL\n"
-    printf "\n"
-    printf "   Uso: $SCRIPTNAME [--php | -p | --mysql | -m]\n"
-    printf "\n"
-    printf "   --php   | -p       Inicializa el servidor Apache y el Servidor PHP\n"
-    printf "   --mysql | -s       Inicializa el servidor MySQL\n"
-    printf "   --ayuda | -a       Muestra esta ayuda\n"
+    printf "$1"
 }
 
 #--
@@ -78,11 +49,81 @@ ctrlC() {
   printf "\n${FBLCO}${BROJO}¡¡¡Se detuvo la ejecución de ${SCRIPTNAME} luego de haber presionado Ctrl-C!!!${SCLR}\n"
 }
 
+#--
+# startApache  Inicializa el servicio de Apache/PHP
+#
+startApache() {
+    local APACHEUP=$(pgrep httpd | wc -l);
+
+    if [[ "$APACHEUP" -eq "$CERO" ]]; then
+        sudo systemctl start httpd
+        if [[ "$?" -eq "$CERO" ]]; then
+            showMsg "\n   Servicios Apache y PHP en línea ${FVRDE}[OK]${SCLR}"
+        else
+            showMsg "\n   Ocurrió un error al intentar cargar los servicios Apache y PHP ${FROJO}[ERROR]${SCLR}"
+            #exit 1
+        fi
+    else
+        showMsg "\n   * Los servicios Apache y PHP ya se encuentran en línea ${FVRDE}[OK]${SCLR}"
+    fi
+}
+
+#--
+# startMySQL   Inicializa el servicio de MySQL
+#
+startMySQL() {
+    local MYSQLUP=$(pgrep mysqld | wc -l);
+
+    if [[ "$MYSQLUP" -eq "$CERO" ]]; then
+        sudo systemctl start mysqld
+        if [[ "$?" -eq "$CERO" ]]; then
+            showMsg "\n   Servicio MySQL en línea ${FVRDE}[OK]${SCLR}"
+        else
+            showMsg "\n   Ocurrió un error al intentar cargar el servicio MySQL ${FROJO}[ERROR]${SCLR}"
+            exit 1
+        fi
+    else
+        showMsg "\n   * El servicio MySQL ya se encuentra en línea ${FVRDE}[OK]${SCLR}"
+    fi
+}
+
+#--
+# startLAMP   Inicializa los servicios de Apache, PHP y MySQL
+#
+startLAMP() {
+    startApache
+    startMySQL
+    showMsg "${HEADER}\n"
+}
+
+#--
+# startLAMP   Inicializa los servicios de Apache, PHP y MySQL
+#
+showStatus() {
+    local APACHEUP=$(pgrep httpd | wc -l);
+    local MYSQLUP=$(pgrep mysqld | wc -l);
+
+    if [[ "$APACHEUP" -eq "$CERO" ]]; then
+        showMsg "\n   * Servicios Apache y PHP fuera de línea ${FROJO}[OFF]${SCLR}"
+    else
+        showMsg "\n   * Servicios Apache y PHP en línea ${FVRDE}[OK]${SCLR}"
+    fi
+
+    if [[ "$MYSQLUP" -eq "$CERO" ]]; then
+        showMsg "\n   * Servicio MySQL fuera de línea ${FROJO}[OFF]${SCLR}"
+    else
+        showMsg "\n   * Servicio MySQL en línea ${FVRDE}[OK]${SCLR}"
+    fi
+    showMsg "${HEADER}\n"
+}
+
 #---------------------------------------------------------------------------------------------------
 # Ejecuto la función setColors al inicio para que las variables globales
 # de colores y atributos de texto estén disponibles en todo el script.
 source /home/tureco/Scripts/include/setcolors.sh
 setColors
+
+declare -g HEADER="\n   ${FVRDE}$SCRIPTNAME${SCLR} versión ${FAMAR}${VERSION}${SCLR} by ${FVRDE}${AUTHORNAME}${SCLR} aka ${FVRDE}${AUTHORNICK}${SCLR}"
 
 if [[ "$#" -lt 1 ]]; then
     showHelp
@@ -95,9 +136,13 @@ else
                 -a | --ayuda)
                     showHelp;;
                 -p | --php)
-                    startApache;;
+                    startApache;showMsg "${HEADER}\n";;
                 -m | --mysql)
-                    startMySQL;;
+                    startMySQL;showMsg "${HEADER}\n";;
+                -l | --lamp)
+                    startLAMP;;
+                -e | --estado)
+                    showStatus;;
                 *)
                     printf "\n   ${BROJO}${FBLCO}ERROR: parámetro desconocido \"$PARAM\"${SCLR}\n"
                     showHelp;;
@@ -107,3 +152,13 @@ else
         done
     fi
 fi
+
+# Elimino todas las variables creadas
+unset PATHSCRIPT
+unset SCRIPTNAME
+unset PARAMETERS
+unset CERO
+unset VERSION
+unset UPDATED
+unset AUTHOR
+unset HEADER
