@@ -1,5 +1,61 @@
 #!/usr/bin/env zsh
 
-sudo chgrp -R http storage bootstrap/cache
-sudo chmod -R ug+rwx storage bootstrap/cache
-printf "\nSe cambiaron los permisos a los directorios \e[1mstorage y bootstrap/cache\e[0m...\n"
+source /home/tureco/Scripts/include/env.sh
+
+declare -g PATHSCRIPT=$0                                                # Capturo la ruta y nombre del script
+declare -g SCRIPTNAME=${PATHSCRIPT: -9}                                 # Extraigo el nombre del script de $PATHSCRIPT
+declare -g PARAMETERS=${@}                                              # Parámetros que recibe la aplicación
+
+declare -g VERSION="1.0.1"
+declare -g UPDATED="2018-04-08 13:22"
+
+declare -g STORAGE="storage"
+declare -g BTCACHE="bootstrap/cache"
+
+trap ctrlC INT                                                          # Capturo si se presionó Ctrl-C
+
+checkDirectories() {
+    if [[ ! -d "$STORAGE" || ! -d "$BTCACHE" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+unsetVariables() {
+    source /home/tureco/Scripts/include/unsetvars.sh
+    unsetVars
+    # Aquí se hace unset <variable> a cualquier otra variable que exista dentro
+    # del script y que no sea estándar dentro de Scripts
+}
+
+Main() {
+    #---------------------------------------------------------------------------------------------------
+    # Ejecuto la función setColors al inicio para que las variables globales de
+    # colores y atributos de texto estén disponibles en todo el script.
+    source /home/tureco/Scripts/include/setcolors.sh
+    source /home/tureco/Scripts/include/showmsg.sh
+    source /home/tureco/Scripts/include/ctrlc.sh
+
+    trap ctrlC INT                                                          # Capturo si se presionó Ctrl-C
+
+    setColors
+    checkDirectories
+
+    declare -g HEADER="\n   ${FVRDE}$SCRIPTNAME${SCLR} versión ${FAMAR}${VERSION}${SCLR} by ${FVRDE}${AUTHORNAME}${SCLR}"
+
+    local EXISTEN=$?                                                    # Capturo el valor retornado por checkDirectories
+
+    if [[ "$EXISTEN" -eq "$CERO" ]]; then
+        showMsg "\n   Los directorios ${FROJO}storage${SCLR} y ${FROJO}bootstrap/cache${SCLR} NO existen!"
+        showMsg "\n   Debe usted ubicarse en una ruta real de un proyecto Laravel."
+    else
+        sudo chgrp -R http storage bootstrap/cache
+        sudo chmod -R ug+rwx storage bootstrap/cache
+        showMsg "\nSe cambiaron los permisos a los directorios ${FVRDE}storage${SCLR} y ${FVRDE}bootstrap/cache${SCLR}...\n"
+    fi
+    showMsg "\n${HEADER}\n"
+}
+
+Main
+unsetVariables
