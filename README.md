@@ -16,9 +16,9 @@ La idea es disponer de un almacén para los scripts que he estado escribiendo, a
 * **[restoretime](https://github.com/3rn3st0/Scripts/blob/master/restoretime)** - Sincroniza el reloj local con el reloj de tiempo disponible en la Web. Este script se hizo luego de que hiciera una instalación con arranque dual de Windows 7. La solución al problema se da realizando una serie de tareas en Windows, pero no están descritas aquí.
 
 ## Por hacer
-- [ ] Crear funcionalidades genéricas que puedan usarse en todos los scripts.
+- [x] ~~Crear funcionalidades genéricas que puedan usarse en todos los scripts.~~
 - [ ] Optimizar el código de `laradirs`, `phpextensions` y `restoretime` para que sean compatibles con las buenas prácticas en la escritura de guines Bash/Zsh.
-- [x] Agregar nuevas funcionalidades a `lampstart` y a cualesquiera de los otros scripts.
+- [x] ~~Agregar nuevas funcionalidades a `lampstart` y a cualesquiera de los otros scripts.~~
 - [ ] Crear nuevos scripts, (por supuesto!!! :stuck_out_tongue_winking_eye: :grin:)
 
 ## Aviso
