@@ -3,6 +3,8 @@
 
 Recopilación de los scripts que he escrito a través del tiempo para resolver problemas particulares u optimizar la realización de trabajos o pequeñas tareas cotidianas.
 
+La idea es disponer de un almacén para los scripts que he estado escribiendo, aprender en el proceso y poner a disposición de todos el código de esos scripts. Es importante que destacar que he procurado usar buenas prácticas de codificación por lo que quien estudie el código, podrá estar seguro de que el código disponible es moderno, profesional y muy ilustrativo.
+
 ## Scripts disponibles
 
 * **[lampstart](https://github.com/3rn3st0/Scripts/blob/master/lampstart)** - Permite inicializar los servicios de Apache, PHP y/o MySQL pasándole algunos parámetros. El script puede ejecutarse sin parámetros y mostrará una ayuda sobre su uso. **¡ADVERTENCIA!** `lampstart` está diseñado para trabajar con el administrador para **SystemD**, **`systemctl`** y su uso sólo se ha probado en ArchLinux, Manjaro y ArchLabs.
