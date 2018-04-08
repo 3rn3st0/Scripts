@@ -7,9 +7,9 @@ set -o nounset                                                          # Detect
 
 PATHSCRIPT=$0                                                           # Capturo la ruta y nombre del script
 SCRIPTNAME=${PATHSCRIPT: -9}                                            # Extraigo el nombre del script de $PATHSCRIPT
-PARAMETERS=${@}															# Parámetros que recibe la aplicación
+PARAMETERS=${@}                                                         # Parámetros que recibe la aplicación
 
-readonly VERSION="3.4.2"
+readonly VERSION="3.4.4"
 readonly AUTHOR="3rn3st0"
 
 trap ctrlC INT                                                          # Capturo si se presionó Ctrl-C
@@ -18,12 +18,17 @@ trap ctrlC INT                                                          # Captur
 # startApache  Inicializa el servicio de Apache/PHP
 #
 startApache() {
-    sudo systemctl start httpd
-    if [[ "$?" -eq 0 ]]; then
-        showMsg "Servidor Apache y PHP en línea ${FVRDE}[OK]${SCLR}\n"
+    APACHEUP=$(pgrep http | wc -l);
+    if [[ "$APACHEUP" -eq 0 ]]; then
+        sudo systemctl start httpd
+        if [[ "$?" -eq 0 ]]; then
+            showMsg "Servidor Apache y PHP en línea ${FVRDE}[OK]${SCLR}\n"
+        else
+            showMsg "Ocurrió un error al intentar cargar Apache/PHP ${FROJO}[ERROR]${SCLR}\n"
+            exit 1
+        fi
     else
-        showMsg "Ocurrió un error al intentar cargar Apache/PHP ${FROJO}[ERROR]${SCLR}\n"
-        exit 1
+        showMsg "El servidor Apache y PHP ya están en línea\n"
     fi
 }
 
@@ -31,12 +36,17 @@ startApache() {
 # startMySQL   Inicializa el servicio de MySQL
 #
 startMySQL() {
-    sudo systemctl start mysqld
-    if [[ "$?" -eq 0 ]]; then
-        showMsg "Servidor MySQL en línea ${FVRDE}[OK]${SCLR}\n"
+    MYSQLUP=$(pgrep http | wc -l);
+    if [[ "$MYSQLUP" -eq 0 ]]; then
+        sudo systemctl start mysqld
+        if [[ "$?" -eq 0 ]]; then
+            showMsg "Servidor MySQL en línea ${FVRDE}[OK]${SCLR}\n"
+        else
+            showMsg "Ocurrió un error al intentar cargar MySQL ${FROJO}[ERROR]${SCLR}\n"
+            exit 1
+        fi
     else
-        showMsg "Ocurrió un error al intentar cargar MySQL ${FROJO}[ERROR]${SCLR}\n"
-        exit 1
+        showMsg "El servidor MySQL ya están en línea\n"
     fi
 }
 
@@ -77,23 +87,23 @@ setColors
 if [[ "$#" -lt 1 ]]; then
     showHelp
 else
-	if [[ -z ${PARAMETERS} ]]; then
-		showHelp
-	else
-		for PARAM in ${PARAMETERS}; do
-			case ${PARAM} in
-	            -a | --ayuda)
-    	            showHelp;;
-        	    -p | --php)
-            	    startApache;;
-	            -m | --mysql)
-    	            startMySQL;;
-        	    *)
-            	    printf "\n   ${BROJO}${FBLCO}ERROR: parámetro desconocido \"$PARAM\"${SCLR}\n"
-                	showHelp;;
-	        esac
-       		# Salta al siguiente parámetro
-    	    #shift
-	    done
-	fi
+    if [[ -z ${PARAMETERS} ]]; then
+        showHelp
+    else
+        for PARAM in ${PARAMETERS}; do
+            case ${PARAM} in
+                -a | --ayuda)
+                    showHelp;;
+                -p | --php)
+                    startApache;;
+                -m | --mysql)
+                    startMySQL;;
+                *)
+                    printf "\n   ${BROJO}${FBLCO}ERROR: parámetro desconocido \"$PARAM\"${SCLR}\n"
+                    showHelp;;
+            esac
+            # Salta al siguiente parámetro
+            shift
+        done
+    fi
 fi
