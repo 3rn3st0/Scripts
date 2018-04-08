@@ -5,13 +5,13 @@ Recopilación de los scripts que he escrito a través del tiempo para resolver p
 
 ## Scripts disponibles
 
-* **[lampstart](https://github.com/3rn3st0/Scripts/blob/master/lampstart)** - Este script, permite inicializar los servicios/demonios de Apache/PHP y/o MySQL pasándole algunos parámetros. El script puede ejecutarse sin parámetros y mostrará una ayuda sobre su uso.
+* **[lampstart](https://github.com/3rn3st0/Scripts/blob/master/lampstart)** - Permite inicializar los servicios/demonios de Apache, PHP y/o MySQL pasándole algunos parámetros. El script puede ejecutarse sin parámetros y mostrará una ayuda sobre su uso.
 
 * **[laradirs](https://github.com/3rn3st0/Scripts/blob/master/laradirs)** - Cambia los atributos para los directorios `storage` y  `bootstrap/cache` en un proyecto PHP/Laravel.
 
 * **[phpextensions](https://github.com/3rn3st0/Scripts/blob/master/phpextensions)** - Instala una serie extensiones para el lenguaje PHP de forma automática (siempre olvido las cosas, así que esto me ayuda a que no me falte nada).
 
-* **[restoretime](https://github.com/3rn3st0/Scripts/blob/master/restoretime)** - Sincroniza el reloj local con el reloj de tiempo disponible en la Web. Este script se hizo luego de que hiciera una instalación dual de Windows 7. La solución al problema se da realizando una serie de tareas en Windows, pero no están descritas aquí.
+* **[restoretime](https://github.com/3rn3st0/Scripts/blob/master/restoretime)** - Sincroniza el reloj local con el reloj de tiempo disponible en la Web. Este script se hizo luego de que hiciera una instalación con arranque dual de Windows 7. La solución al problema se da realizando una serie de tareas en Windows, pero no están descritas aquí.
 
 ## Por hacer
 - [ ] Crear funcionalidades genéricas que puedan usarse en todos los scripts.
