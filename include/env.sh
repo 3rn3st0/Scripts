@@ -10,3 +10,5 @@ declare -g CERO=0
 declare -g UNO=1
 declare -g AUTHORNAME="Ernesto L. Chapon R."
 declare -g AUTHORNICK="3rn3st0"
+declare -g COPYRIGHT="© 2018"
+declare -g LICENCE="MIT"
