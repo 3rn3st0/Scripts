@@ -10,7 +10,7 @@ declare -g SCRIPTNAME=${PATHSCRIPT: -9}                                 # Extrai
 declare -g PARAMETERS=${@}                                              # Parámetros que recibe la aplicación
 declare -g CERO=0
 
-declare -g VERSION="3.6"
+declare -g VERSION="3.6.1"
 declare -g UPDATED="2018-04-08 12:45"
 declare -g AUTHORNAME="Ernesto L. Chapon R."
 declare -g AUTHORNICK="3rn3st0"
@@ -117,6 +117,20 @@ showStatus() {
     showMsg "${HEADER}\n"
 }
 
+#--
+# unsetVariables   Elimina todas las variables declaradas para limpiar la memoria
+#
+unsetVariables() {
+    unset PATHSCRIPT
+    unset SCRIPTNAME
+    unset PARAMETERS
+    unset CERO
+    unset VERSION
+    unset UPDATED
+    unset AUTHOR
+    unset HEADER
+}
+
 #---------------------------------------------------------------------------------------------------
 # Ejecuto la función setColors al inicio para que las variables globales
 # de colores y atributos de texto estén disponibles en todo el script.
@@ -154,11 +168,4 @@ else
 fi
 
 # Elimino todas las variables creadas
-unset PATHSCRIPT
-unset SCRIPTNAME
-unset PARAMETERS
-unset CERO
-unset VERSION
-unset UPDATED
-unset AUTHOR
-unset HEADER
+unsetVariables
