@@ -5,7 +5,7 @@ Recopilación de los scripts que he escrito a través del tiempo para resolver p
 
 ## Scripts disponibles
 
-* **[lampstart](https://github.com/3rn3st0/Scripts/blob/master/lampstart)** - Permite inicializar los servicios/demonios de Apache, PHP y/o MySQL pasándole algunos parámetros. El script puede ejecutarse sin parámetros y mostrará una ayuda sobre su uso.
+* **[lampstart](https://github.com/3rn3st0/Scripts/blob/master/lampstart)** - Permite inicializar los servicios de Apache, PHP y/o MySQL pasándole algunos parámetros. El script puede ejecutarse sin parámetros y mostrará una ayuda sobre su uso. **¡ADVERTENCIA!** `lampstart` está diseñado para trabajar con el administrador para **SystemD**, **`systemctl`** y su uso sólo se ha probado en ArchLinux, Manjaro y ArchLabs.
 
 * **[laradirs](https://github.com/3rn3st0/Scripts/blob/master/laradirs)** - Cambia los atributos para los directorios `storage` y  `bootstrap/cache` en un proyecto PHP/Laravel.
 
@@ -16,7 +16,7 @@ Recopilación de los scripts que he escrito a través del tiempo para resolver p
 ## Por hacer
 - [ ] Crear funcionalidades genéricas que puedan usarse en todos los scripts.
 - [ ] Optimizar el código de `laradirs`, `phpextensions` y `restoretime` para que sean compatibles con las buenas prácticas en la escritura de guines Bash/Zsh.
-- [ ] Agregar nuevas funcionalidades a `lampstart` y a cualesquiera de los otros scripts.
+- [x] Agregar nuevas funcionalidades a `lampstart` y a cualesquiera de los otros scripts.
 - [ ] Crear nuevos scripts, (por supuesto!!! :stuck_out_tongue_winking_eye: :grin:)
 
 ## Aviso
