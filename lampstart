@@ -1,15 +1,14 @@
 #!/usr/bin/env zsh
 
-source /home/tureco/Scripts/include/env.sh
-
-declare -g PATHSCRIPT=$0                                                # Capturo la ruta y nombre del script
-declare -g SCRIPTNAME=${PATHSCRIPT: -9}                                 # Extraigo el nombre del script de $PATHSCRIPT
+declare -g PATHSCRIPT=$(dirname "$0")                                 # Capturo la ruta y nombre del script
+declare -g SCRIPTNAME=$(basename "$0")                                  # Extraigo el nombre del script de $PATHSCRIPT
 declare -g PARAMETERS=${@}                                              # Parámetros que recibe la aplicación
+declare -g INCLUDES="${PATHSCRIPT}/include"
 
-declare -g VERSION="3.6.5"
-declare -g UPDATED="2018-04-08 15:16"
-declare -g AUTHORNAME="Ernesto L. Chapon R."
-declare -g AUTHORNICK="3rn3st0"
+source "${INCLUDES}/env.sh"
+
+declare -g VERSION="3.6.6"
+declare -g UPDATED="2018-04-09 08:52"
 
 #--
 # showHelp     Muestra la ayuda del lampstart
@@ -101,7 +100,7 @@ showStatus() {
 # unsetVariables   Elimina todas las variables declaradas para limpiar la memoria
 #
 unsetVariables() {
-    source /home/tureco/Scripts/include/unsetvars.sh
+    source "${INCLUDES}/unsetvars.sh"
     unsetVars
     # Aquí se hace unset <variable> a cualquier otra variable que exista dentro
     # del script y que no sea estándar dentro de Scripts
@@ -110,11 +109,11 @@ unsetVariables() {
 #---------------------------------------------------------------------------------------------------
 # Ejecuto la función setColors al inicio para que las variables globales de
 # colores y atributos de texto estén disponibles en todo el script.
-source /home/tureco/Scripts/include/setcolors.sh
+source "${INCLUDES}/setcolors.sh"
 setColors
-source /home/tureco/Scripts/include/showmsg.sh
-source /home/tureco/Scripts/include/ctrlc.sh
-source /home/tureco/Scripts/include/headerfooter.sh
+source "${INCLUDES}/showmsg.sh"
+source "${INCLUDES}/ctrlc.sh"
+source "${INCLUDES}/headerfooter.sh"
 
 trap ctrlC INT                                                          # Capturo si se presionó Ctrl-C
 
