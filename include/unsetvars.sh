@@ -5,6 +5,7 @@ unsetVars() {
     unset PATHSCRIPT
     unset SCRIPTNAME
     unset PARAMETERS
+    unset INCLUDES
 
     unset VERSION
     unset UPDATED
