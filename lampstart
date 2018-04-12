@@ -1,14 +1,14 @@
 #!/usr/bin/env zsh
 
-declare -g PATHSCRIPT=$(dirname "$0")                                 # Capturo la ruta y nombre del script
+declare -g PATHSCRIPT=$(dirname "$0")                                   # Capturo la ruta y nombre del script
 declare -g SCRIPTNAME=$(basename "$0")                                  # Extraigo el nombre del script de $PATHSCRIPT
 declare -g PARAMETERS=${@}                                              # Parámetros que recibe la aplicación
 declare -g INCLUDES="${PATHSCRIPT}/include"
 
 source "${INCLUDES}/env.sh"
 
-declare -g VERSION="3.6.6"
-declare -g UPDATED="2018-04-09 08:52"
+declare -g VERSION="3.6.7"
+declare -g UPDATED="2018-04-12 08:47"
 
 #--
 # showHelp     Muestra la ayuda del lampstart
