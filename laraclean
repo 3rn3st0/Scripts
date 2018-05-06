@@ -2,16 +2,21 @@
 
 printf "Limpiando entorno de Laravel...\n"
 printf
+printf "Caché de la aplicación..:\n"
+php artisan cache:clear
 printf "Caché de configuración..:\n"
 php artisan config:clear
 printf "Caché de enrutamiento..:\n"
-php artisan route:cache
+php artisan route:clear
 printf "Vistas compiladas..:\n"
 php artisan view:clear
+printf "Componentes compilados..:\n"
+php artisan clear-compiled
+
 if [ "$?" -eq "0" ]; then
-	read -rst 2; timeout=$?
-	clear
-	printf "Entorno de Laravel limpio\n"
+    read -rst 2; timeout=$?
+    clear
+    printf "Entorno de Laravel limpio\n"
 else
-	printf "Ocurrió un error durante el proceso, por favor, verifique\n"
+    printf "Ocurrió un error durante el proceso, por favor, verifique\n"
 fi
