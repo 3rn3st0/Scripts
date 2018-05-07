@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 printf "Limpiando entorno de Laravel...\n"
-printf
+printf "\n"
 printf "Caché de la aplicación..:\n"
 php artisan cache:clear
 printf "Caché de configuración..:\n"
