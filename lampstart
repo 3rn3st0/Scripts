@@ -93,7 +93,7 @@ showStatus() {
     else
         showMsg "\n   * Servicio MySQL en línea ${FVRDE}[OK]${SCLR}"
     fi
-    showMsg "${HEADER}"
+    showFooter
 }
 
 #--
