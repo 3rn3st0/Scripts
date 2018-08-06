@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+export OCTAL=$(stat -c '%a' $1)
+
+echo "Los permisos del archivo son: ${OCTAL}"
